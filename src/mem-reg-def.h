@@ -35,4 +35,22 @@
     MEM_REGIONS_LINEAR_INC \
     MEM_REGIONS_BINEXP_INC
 
+/*
+ * Overridable function call names
+ */
+
+/*Function call to create a new element*/
+#ifndef MEM_REG_NEW_FUNC
+#define MEM_REG_NEW_FUNC(name) mem_reg_ ## name ## _new
+#endif
+
+/*
+ * Definitions that should NOT be overridden
+ */
+
+#define MEM_INST mem
+
+#define MEM_REG_NEW_FUNC_DECL(type, name) \
+    type * MEM_REG_NEW_FUNC(name)(mem_reg_t * MEM_INST)
+
 #endif
