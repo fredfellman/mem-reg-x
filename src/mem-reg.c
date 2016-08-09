@@ -233,6 +233,8 @@ _M_NODE_GET_ELEM_DECL(type, name)   \
                     (_MEM_INST_NODE_INDEX(name)));  \
         _MEM_INST_NODE_INDEX(name) =            \
             _MEM_INST_NODE_INDEX(name)->next;   \
+    } else { \
+        _MEM_INST_NODE_INDEX(name)->index++;\
     } \
     return ret_elem; \
 }

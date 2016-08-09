@@ -1,12 +1,6 @@
 #ifndef _MEM_REG_H
 #define _MEM_REG_H
 
-#define MEM_REGIONS_BINEXP_INC \
-    MEM_REG(int, foo, 3)
-
-#define MEM_REGIONS_LINEAR_INC \
-    MEM_REG(double, bar, 32)
-
 #include "mem-reg-def.h"
 
 /*Memory region manager handler*/
