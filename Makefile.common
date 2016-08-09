@@ -6,3 +6,5 @@ SRCDIR=$(ROOT_DIR)/src
 SRCFILES=$(SRCDIR)/mem-reg.c
 
 CFLAGS=-Wall -g -I$(SRCDIR)
+
+VALGRIND?=valgrind

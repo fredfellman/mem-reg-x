@@ -16,13 +16,16 @@ test-unit: $(TEST_TARGETS)
 	@echo "\t***********************************"
 
 test-mem: $(TEST_TARGETS)
-	@cd $(BUILDDIR) && for t in $^; do valgrind $(BUILDDIR)/$$t || exit 1; done
+	@cd $(BUILDDIR) && for t in $^; do $(VALGRIND) $(BUILDDIR)/$$t || exit 1; done
 	@echo "\t***********************************"
 	@echo "\t*     Memory Tests Successful     *"
 	@echo "\t***********************************"
 
 test-priv-%: test-priv-%.c
 	$(CC) $(CFLAGS) $^ -o $(BUILDDIR)/$@
+
+test-pub-%: test-pub-%.c
+	$(CC) $(CFLAGS) $^ $(SRCFILES) -o $(BUILDDIR)/$@
 
 clean:
 	cd $(BUILDDIR) && rm $(TEST_TARGETS)
