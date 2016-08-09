@@ -4,12 +4,27 @@
 #define MEM_REGIONS_LINEAR_INC \
     MEM_REG(int, foo, 12)
 
+struct baz { int a; };
+#define MEM_REGIONS_BINEXP_INC \
+    MEM_REG(struct baz, bar, 4)
+
 #define foo_init_func(size) _M_NODE_INIT_FUNC(foo)(size)
 #define foo_free_func(f) _M_NODE_FREE_FUNC(foo)(f)
 #define foo_struct _M_NODE_STRUCT(foo)
 #define foo_get_next_elem(f) _M_NODE_GET_ELEM_FUNC(foo)(&f)
 #define foo_head(mem) mem._M_NODE_NAME(foo).head
 #define foo_index(mem) mem._M_NODE_NAME(foo).index
+#define foo_next_region_size(foos) \
+    _M_NODE_NEXT_REG_SIZE_FUNC(foo)(foos)
+
+#define bar_init_func(size) _M_NODE_INIT_FUNC(bar)(size)
+#define bar_free_func(f) _M_NODE_FREE_FUNC(bar)(f)
+#define bar_struct _M_NODE_STRUCT(bar)
+#define bar_get_next_elem(f) _M_NODE_GET_ELEM_FUNC(bar)(&f)
+#define bar_head(mem) mem._M_NODE_NAME(bar).head
+#define bar_index(mem) mem._M_NODE_NAME(bar).index
+#define bar_next_region_size(bars) \
+    _M_NODE_NEXT_REG_SIZE_FUNC(bar)(bars)
 
 #include "mem-reg.c"
 
@@ -27,6 +42,30 @@ void test_init_free_func(void)
 
     foo_free_func(foo_var);
     INFO("Region node freed");
+}
+
+void test_inc_functions(void)
+{
+    foo_struct * foos;
+    bar_struct * bars;
+
+    foos = foo_init_func(105);
+    assert(foos);
+
+    bars = bar_init_func(67);
+    assert(bars);
+
+    /*Linearly incrementing function should stay the same*/
+    assert(foo_next_region_size(foos) == 105);
+    INFO("Linear incrementing region size successful");
+
+    /*Binary exp incrementing function should double*/
+    assert(bar_next_region_size(bars) == 67*2);
+    INFO("Binary exponential incrementing region size successful");
+
+    /*Clean up*/
+    foo_free_func(foos);
+    bar_free_func(bars);
 }
 
 void test_get_elems(void)
@@ -83,6 +122,7 @@ int main(void)
 {
     INFO("Beginning basic initialization tests");
     test_init_free_func();
+    test_inc_functions();
     test_get_elems();
     return 0;
 }
