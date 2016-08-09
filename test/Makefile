@@ -5,7 +5,7 @@ include $(HERE)/../Makefile.common
 
 all: test
 
-TEST_TARGETS = test-priv-xfuncs
+TEST_TARGETS = test-priv-xfuncs test-pub-basic
 
 test: test-unit test-mem
 
@@ -22,10 +22,10 @@ test-mem: $(TEST_TARGETS)
 	@echo "\t***********************************"
 
 test-priv-%: test-priv-%.c
-	$(CC) $(CFLAGS) $^ -o $(BUILDDIR)/$@
+	$(CC) $(CFLAGS) $< -o $(BUILDDIR)/$@
 
 test-pub-%: test-pub-%.c
-	$(CC) $(CFLAGS) $^ $(SRCFILES) -o $(BUILDDIR)/$@
+	$(CC) $(CFLAGS) $(SRCFILES) $< -o $(BUILDDIR)/$@
 
 clean:
 	cd $(BUILDDIR) && rm $(TEST_TARGETS)

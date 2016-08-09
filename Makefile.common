@@ -1,6 +1,6 @@
 ROOT_DIR:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
-BUILDDIR=$(ROOT_DIR)/build
+BUILDDIR?=$(ROOT_DIR)/build
 TESTDIR=$(ROOT_DIR)/test
 SRCDIR=$(ROOT_DIR)/src
 SRCFILES=$(SRCDIR)/mem-reg.c

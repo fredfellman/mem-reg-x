@@ -4,7 +4,7 @@ HERE:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 include $(HERE)/Makefile.common
 
-all: test
+all: $(BUILDDIR) test
 
 test:
 	make -C $(TESTDIR) test
