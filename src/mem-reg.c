@@ -89,7 +89,7 @@ MEM_REGIONS
 
 mem_reg_t * mem_reg_new(void)
 {
-    mem_reg_t * mem_mgr = NULL;
+    mem_reg_t * MEM_INST = NULL;
     int error_status = 0;
 
     do {
@@ -97,20 +97,23 @@ mem_reg_t * mem_reg_new(void)
          * Allocate handle. Note that we directly use calloc regardless
          * of if the user defined MEM_REG_NO_CALLOC
          */
-        mem_mgr = MEM_REG_CALLOC(1, sizeof(mem_reg_t));
-        if(mem_mgr){
+        MEM_INST = MEM_REG_CALLOC(1, sizeof(mem_reg_t));
+        if(!MEM_INST){
             error_status = -1;
             continue;
         }
 
         /*Initialize memory regions*/
 #define MEM_REG(type, name, init)   \
-        mem_mgr->_M_NODE_NAME(name).head = _M_NODE_INIT_FUNC(name)(init);   \
+        _MEM_INST_NODE_HEAD(name) = _M_NODE_INIT_FUNC(name)(init); \
         \
-        if(! mem_mgr->_M_NODE_NAME(name).head){ \
-            error_status = -1;                  \
-            continue;                           \
-        }
+        if(! (_MEM_INST_NODE_HEAD(name))){  \
+            error_status = -1;              \
+            continue;                       \
+        } \
+        /*Set index to head*/           \
+        _MEM_INST_NODE_INDEX(name) =    \
+            _MEM_INST_NODE_HEAD(name);
 
 MEM_REGIONS
 #undef MEM_REG
@@ -118,11 +121,11 @@ MEM_REGIONS
 
     /*Clean up if an error occurred during initialization*/
     if(error_status < 0){
-        mem_reg_free(mem_mgr);
-        mem_mgr = NULL;
+        mem_reg_free(MEM_INST);
+        MEM_INST = NULL;
     }
 
-    return mem_mgr;
+    return MEM_INST;
 }
 
 void mem_reg_free(mem_reg_t * mem_mgr)
@@ -234,7 +237,7 @@ _M_NODE_GET_ELEM_DECL(type, name)   \
         _MEM_INST_NODE_INDEX(name) =            \
             _MEM_INST_NODE_INDEX(name)->next;   \
     } else { \
-        _MEM_INST_NODE_INDEX(name)->index++;\
+        _MEM_INST_NODE_INDEX(name)->index++; \
     } \
     return ret_elem; \
 }

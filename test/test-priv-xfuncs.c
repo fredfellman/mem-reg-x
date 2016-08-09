@@ -118,11 +118,35 @@ void test_get_elems(void)
     foo_free_func(foo_index(mem_mgr));
 }
 
+void test_mem_public_mem_init(void)
+{
+    mem_reg_t * mem = NULL;
+
+    INFO("Testing that public allocation was correct");
+
+    mem = mem_reg_new();
+    assert(mem);
+    INFO("Allocation successful");
+
+    /*Check that both types of regions were allocated*/
+    assert(mem->_M_NODE_NAME(foo).head);
+    assert(mem->_M_NODE_NAME(bar).head);
+
+    /*Check that indices are in the right place*/
+    assert(mem->_M_NODE_NAME(foo).head ==
+            mem->_M_NODE_NAME(foo).index);
+    assert(mem->_M_NODE_NAME(bar).head ==
+            mem->_M_NODE_NAME(bar).index);
+
+    mem_reg_free(mem);
+}
+
 int main(void)
 {
     INFO("Beginning basic initialization tests");
     test_init_free_func();
     test_inc_functions();
     test_get_elems();
+    test_mem_public_mem_init();
     return 0;
 }
