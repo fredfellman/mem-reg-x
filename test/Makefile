@@ -30,4 +30,4 @@ test-pub-%: test-pub-%.c test-pub-%-def.h
 	$(CC) $(CFLAGS) $(SRCFILES) -DMEM_REG_INCLUDE="$@-def.h" $< -o $(BUILDDIR)/$@
 
 clean:
-	cd $(BUILDDIR) && rm $(TEST_TARGETS)
+	cd $(BUILDDIR) && rm -f $(TEST_TARGETS)

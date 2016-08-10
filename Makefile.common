@@ -4,6 +4,7 @@ BUILDDIR?=$(ROOT_DIR)/build
 TESTDIR=$(ROOT_DIR)/test
 SRCDIR=$(ROOT_DIR)/src
 SRCFILES=$(SRCDIR)/mem-reg.c
+EXAMPLEDIR=$(ROOT_DIR)/examples
 
 CFLAGS=-Wall -g -I$(SRCDIR)
 
