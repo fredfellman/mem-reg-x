@@ -1,3 +1,4 @@
+/*Include user definitions*/
 #define _M_STROF_AUX(n) #n
 #define _M_STROF(n) _M_STROF_AUX(n)
 
@@ -6,6 +7,11 @@
 #endif
 
 #include "mem-reg.h"
+
+/*Make sure that null has been declared (in case std-lib was not included)*/
+#ifndef NULL
+#include <stddef.h>
+#endif
 
 /*
  * Common macros

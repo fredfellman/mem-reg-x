@@ -1,21 +1,22 @@
 #ifndef _MEM_REG_DEF_H
 #define _MEM_REG_DEF_H
 
-#include <stdlib.h>
-
 /*
  * Override the following pre-processor definitions to use
  * custom memory allocation functions.
  */
 #ifndef MEM_REG_MALLOC
+#include <stdlib.h>
 #define MEM_REG_MALLOC malloc
 #endif
 
 #ifndef MEM_REG_CALLOC
+#include <stdlib.h>
 #define MEM_REG_CALLOC calloc
 #endif
 
 #ifndef MEM_REG_FREE
+#include <stdlib.h>
 #define MEM_REG_FREE free
 #endif
 
