@@ -1,3 +1,10 @@
+#define _M_STROF_AUX(n) #n
+#define _M_STROF(n) _M_STROF_AUX(n)
+
+#ifdef MEM_REG_INCLUDE
+#include _M_STROF(MEM_REG_INCLUDE)
+#endif
+
 #include "mem-reg.h"
 
 /*

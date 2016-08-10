@@ -1,12 +1,5 @@
+#include "test-pub-basic-def.h"
 #include "test-common.h"
-
-#define MEM_REGIONS_LINEAR_INC \
-    MEM_REG(int, foo, 12)
-
-struct baz { int a; };
-#define MEM_REGIONS_BINEXP_INC \
-    MEM_REG(struct baz, bar, 4)
-
 #include "mem-reg.h"
 
 void test_basic(void)

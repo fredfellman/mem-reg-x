@@ -3,6 +3,8 @@ HERE:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 include $(HERE)/../Makefile.common
 
+CFLAGS += -I$(HERE)
+
 all: test
 
 TEST_TARGETS = test-priv-xfuncs test-pub-basic
@@ -21,11 +23,11 @@ test-mem: $(TEST_TARGETS)
 	@echo "\t*     Memory Tests Successful     *"
 	@echo "\t***********************************"
 
-test-priv-%: test-priv-%.c
-	$(CC) $(CFLAGS) $< -o $(BUILDDIR)/$@
+test-priv-%: test-priv-%.c test-priv-%-def.h
+	$(CC) $(CFLAGS) -DMEM_REG_INCLUDE="$@-def.h" $< -o $(BUILDDIR)/$@
 
-test-pub-%: test-pub-%.c
-	$(CC) $(CFLAGS) $(SRCFILES) $< -o $(BUILDDIR)/$@
+test-pub-%: test-pub-%.c test-pub-%-def.h
+	$(CC) $(CFLAGS) $(SRCFILES) -DMEM_REG_INCLUDE="$@-def.h" $< -o $(BUILDDIR)/$@
 
 clean:
 	cd $(BUILDDIR) && rm $(TEST_TARGETS)
