@@ -28,7 +28,7 @@ CFLAGS += -I$(HERE)
 
 all: test
 
-TEST_TARGETS = test-priv-xfuncs test-pub-basic
+TEST_TARGETS = test-priv-xfuncs test-pub-basic test-pub-time
 
 test: test-unit test-mem
 

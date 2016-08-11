@@ -36,6 +36,14 @@
 #include <stddef.h>
 #endif
 
+/*Enable logging*/
+#ifdef MEM_REG_DEBUG
+#include <stdio.h>
+#define DEBUG(fmt, ...) printf("%s "fmt"\n", __FUNCTION__, ##__VA_ARGS__)
+#else
+#define DEBUG(fmt, ...)
+#endif
+
 /*
  * Common macros
  */
@@ -48,6 +56,7 @@
 #endif
 
 #define _REGION_SIZE(reg) (((reg)->tail - (reg)->head) + 1)
+
 
 /*
  * Private X-Macros
@@ -74,7 +83,7 @@
 
 #define _M_NODE_NEXT_REG_SIZE_FUNC(name) _node_ ## name ## _next_size
 #define _M_NODE_NEXT_REG_SIZE_DECL(name)                 \
-    static unsigned int _M_NODE_NEXT_REG_SIZE_FUNC(name) \
+    static unsigned long _M_NODE_NEXT_REG_SIZE_FUNC(name) \
         (_M_NODE_STRUCT(name) * _M_NODE_VAR)
 
 #define _MEM_INST_NODE(name) MEM_INST->_M_NODE_NAME(name)
@@ -260,8 +269,8 @@ _M_NODE_GET_ELEM_DECL(type, name)   \
 { \
     type * ret_elem = NULL; \
     \
-    /*Set the return element from index*/ \
-    ret_elem = MEM_INST->_M_NODE_NAME(name).index->index; \
+    /*Set the return element from index*/           \
+    ret_elem = _MEM_INST_NODE_INDEX(name)->index;   \
     \
     /*Check to see if we are at the end of the region*/ \
     if(_MEM_INST_NODE_INDEX(name)->index ==         \
@@ -275,6 +284,12 @@ _M_NODE_GET_ELEM_DECL(type, name)   \
     } else { \
         _MEM_INST_NODE_INDEX(name)->index++; \
     } \
+    \
+    /*Check for errors*/            \
+    if(!_MEM_INST_NODE_INDEX(name)) \
+        ret_elem = NULL;            \
+    \
+    DEBUG("New index %p", _MEM_INST_NODE_INDEX(name)->index); \
     return ret_elem; \
 }
 
@@ -295,7 +310,10 @@ MEM_REGIONS_LINEAR_INC
 #define MEM_REG(type, name, init)   \
 _M_NODE_NEXT_REG_SIZE_DECL(name)    \
 { \
-    return (_REGION_SIZE(_M_NODE_VAR)<<1); \
+    unsigned long next_size = _REGION_SIZE(_M_NODE_VAR);    \
+    next_size <<=1;                                         \
+    DEBUG("Next binary region size %lu", next_size);          \
+    return next_size;                                       \
 }
 
 MEM_REGIONS_BINEXP_INC
