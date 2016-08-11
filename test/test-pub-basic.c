@@ -37,8 +37,8 @@ void test_basic(void)
 
 void test_many_allocs(void)
 {
-#define NUM_ALLOCS 10000000
-    unsigned int i;
+#define NUM_ALLOCS 100000000
+    unsigned long long i;
     mem_reg_t * mem = NULL;
 
     mem = mem_reg_new();
@@ -48,7 +48,7 @@ void test_many_allocs(void)
         assert(mem_reg_bar_new(mem));
     }
 
-    INFO("Successfully allocated %d structures", NUM_ALLOCS);
+    INFO("Successfully allocated %llu structures", NUM_ALLOCS);
 
     mem_reg_free(mem);
 }

@@ -62,7 +62,7 @@
 
 #define _M_NODE_INIT_FUNC(name) _node_ ## name ## _init
 #define _M_NODE_INIT_DECL(name) \
-    static _M_NODE_STRUCT(name) * _M_NODE_INIT_FUNC(name)(unsigned int _M_SIZE_VAR)
+    static _M_NODE_STRUCT(name) * _M_NODE_INIT_FUNC(name)(unsigned long _M_SIZE_VAR)
 
 #define _M_NODE_FREE_FUNC(name) _node_ ## name ## _free
 #define _M_NODE_FREE_DECL(name) \
